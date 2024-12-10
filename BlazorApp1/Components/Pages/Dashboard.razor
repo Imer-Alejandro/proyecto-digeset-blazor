@@ -1,0 +1,148 @@
+@page "/dashboard/{AgenteId:int}"
+@inject MultaService MultaService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+<link rel="stylesheet" href="dashboard.css">
+
+<div class="container mt-5">
+    <!-- Menú horizontal -->
+    <div class="menu-bar bg-success text-white p-3">
+        <div class="d-flex justify-content-between">
+            <h4>Dashboard</h4>
+            <div>
+                <button class="menu-button" @onclick="CerrarSesion">Cerrar Sesión</button>
+                <button class="menu-button" @onclick="AbrirCentroOperaciones">Centro de Operaciones</button>
+                <button class="menu-button" @onclick="MostrarFormulario">Registrar multa</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Información de Comisión -->
+    <div class="comision-info mt-4 text-center">
+        <h3>Comisión del Mes 💰</h3>
+        <p>Total Ingresos: <strong>@TotalComision</strong> DOP</p>
+    </div>
+
+    <!-- Listado de Multas -->
+    <div class="multas-list mt-5">
+        <h3>Listado de Multas 📋</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Descripción</th>
+                    <th>Cédula</th>
+                    <th>Nombre</th>
+                    <th>Estado</th>
+                    <th>Monto</th>
+                    <th>Coordenadas</th>
+                    <th>Foto</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var multa in ListaMultas)
+                {
+                    <tr>
+                        <td>@multa.Fecha.ToShortDateString()</td>
+                        <td>@multa.Descripcion</td>
+                        <td>@multa.CedulaCiudadano</td>
+                        <td>@multa.NombreCiudadano</td>
+                        <td>@(multa.Pagada ? "Pagada" : "Activa")</td>
+                        <td>@multa.Monto</td>
+                        <td> <a href="https://www.google.com/maps?q=@multa.Coordenadas" target="_blank">Ver en Google Maps</a></td>
+                        <td>
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4WwVuSj7kOF4GPwg_LXIkbx7AdckJ2AlxxQ&s" alt="Foto" style="width: 50px; height: auto;" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Formulario para Registrar Multa -->
+    @if (MostrarFormularioMulta)
+    {
+        <div class="form-container mt-5">
+            <button @onclick="MostrarFormulario" style="color: brown;">X</button>
+            <h4>Registrar Multa</h4>
+            <form @onsubmit="RegistrarMulta">
+                <div class="mb-3">
+                    <label for="cedula" class="form-label">Cédula del Ciudadano</label>
+                    <input type="text" id="cedula" class="form-control" @bind="NuevaMulta.CedulaCiudadano" required />
+                </div>
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre del Ciudadano</label>
+                    <input type="text" id="nombre" class="form-control" @bind="NuevaMulta.NombreCiudadano" required />
+                </div>
+                <div class="mb-3">
+                    <label for="descripcion" class="form-label">Descripción</label>
+                    <input type="text" id="descripcion" class="form-control" @bind="NuevaMulta.Descripcion" required />
+                </div>
+                <div class="mb-3">
+                    <label for="monto" class="form-label">Monto</label>
+                    <input type="number" id="monto" class="form-control" @bind="NuevaMulta.Monto" required />
+                </div>
+                <div class="mb-3">
+                    <label for="coordenadas" style="display: none;" class="form-label">Coordenadas</label>
+                    <input type="text" id="coordenadas" class="form-control" @bind="NuevaMulta.Coordenadas" />
+                </div>
+                <button type="submit" class="btn btn-success">Registrar</button>
+            </form>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] 
+    public int AgenteId { get; set; }
+    private bool MostrarFormularioMulta = false;
+    private decimal TotalComision = 0;
+    private List<Multa> ListaMultas = new();
+    private Multa NuevaMulta = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaMultas = await MultaService.ObtenerMultasPorAgenteAsync(AgenteId);
+        TotalComision = await MultaService.CalcularComisionMensualAsync(AgenteId);
+        await CargarMapa();
+    }
+
+    private async Task RegistrarMulta()
+    {
+        
+        NuevaMulta.AgenteId = AgenteId;
+        var exito = await MultaService.RegistrarMultaAsync(NuevaMulta);
+        if (exito)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Multa registrada exitosamente");
+            ListaMultas = await MultaService.ObtenerMultasPorAgenteAsync(AgenteId);
+            TotalComision = await MultaService.CalcularComisionMensualAsync(AgenteId);
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Error al registrar multa");
+        }
+    }
+
+    private void MostrarFormulario()
+    {
+        MostrarFormularioMulta = !MostrarFormularioMulta;
+    }
+
+    private void CerrarSesion()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+    private void AbrirCentroOperaciones()
+    {
+        NavigationManager.NavigateTo("/centroOperaciones");
+    }
+
+    private async Task CargarMapa()
+    {
+        var multasUltimas4Semanas = await MultaService.ObtenerMultasUltimas4SemanasAsync(AgenteId);
+    }
+}

@@ -1,0 +1,90 @@
+﻿@page "/"
+@inject MultaService MultaService
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
+
+<link rel="stylesheet" href="login.css">
+
+<div class="container mt-5">
+    <div class="header">
+        <img width="150" height="150" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4WwVuSj7kOF4GPwg_LXIkbx7AdckJ2AlxxQ&s" alt="" srcset="">
+        <h1>Iniciar Sesión - Digesett</h1>
+    </div>
+    <div class="row justify-content-center">
+        <!-- Sección de Login -->
+        <div class="col-md-5 border rounded p-4 shadow bg-white">
+            <h3 class="text-center text-success">Iniciar Sesión</h3>
+            <form @onsubmit="IniciarSesion">
+                <div class="mb-3">
+                    <label for="cedula" class="form-label">Cédula</label>
+                    <input type="text" id="cedula" class="form-control" @bind="LoginModel.Cedula" required />
+                </div>
+                <div class="mb-3">
+                    <label for="clave" class="form-label">Clave</label>
+                    <input type="password" id="clave" class="form-control" @bind="LoginModel.Clave" required />
+                </div>
+                <button type="submit" class="btn btn-success w-100">Iniciar Sesión</button>
+            </form>
+        </div>
+
+        <!-- Separador -->
+        <div class="col-md-1 text-center align-self-center">
+            <h5 class="text-muted">Ó</h5>
+        </div>
+
+        <!-- Sección de Registro -->
+        <div class="col-md-5 border rounded p-4 shadow bg-white">
+            <h3 class="text-center text-success">Registrarse</h3>
+            <form @onsubmit="RegistrarAgente">
+                <div class="mb-3">
+                    <label for="cedulaReg" class="form-label">Cédula</label>
+                    <input type="text" id="cedulaReg" class="form-control" @bind="RegistroModel.Cedula" required />
+                </div>
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" id="nombre" class="form-control" @bind="RegistroModel.Nombre" required />
+                </div>
+                <div class="mb-3"> 
+                    <label for="claveReg" class="form-label">Clave</label>
+                    <input type="password" id="claveReg" class="form-control" @bind="RegistroModel.Clave" required />
+                </div>
+                <button type="submit" class="btn btn-success w-100">Registrarse</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@code {
+    private Agente LoginModel = new();
+    private Agente RegistroModel = new();
+
+private async Task IniciarSesion()
+{
+    var agente = await MultaService.LoginAsync(LoginModel.Cedula, LoginModel.Clave);
+    if (agente != null)
+    {
+        // Redirigir a la página de dashboard con el ID del agente
+        NavigationManager.NavigateTo($"/dashboard/{agente.Id}");
+    }
+    else
+    {
+        Console.WriteLine("Credenciales inválidas");
+    }
+}
+
+    private async Task RegistrarAgente()
+{
+    var exito = await MultaService.RegistrarUsuarioAsync(RegistroModel);
+    if (exito)
+    {
+        // Mostrar alerta de éxito
+        await JSRuntime.InvokeVoidAsync("alert", "Agente registrado exitosamente");
+    }
+    else
+    {
+        // Mostrar alerta de error
+        await JSRuntime.InvokeVoidAsync("alert", "Error al registrar agente");
+    }
+}
+}

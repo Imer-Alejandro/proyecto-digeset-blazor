@@ -1,0 +1,95 @@
+.header{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+/* Contenedor principal */
+.container {
+    margin-top: 5px;
+}
+
+/* Estilo para las columnas de login y registro */
+.row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Estilo para las cajas de login y registro */
+.col-md-5 {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+}
+
+/* Títulos */
+h3,h1 {
+    color: #28a745;
+    margin-bottom: 20px;
+}
+
+/* Separador vertical */
+.col-md-1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilo para los campos de texto */
+.form-label {
+    font-weight: bold;
+    color: #555;
+}
+
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+/* Botones */
+.btn-success {
+    background-color: #28a745;
+    border: none;
+    color: #fff;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    cursor: pointer;
+}
+
+/* Estilo para el separador "Ó" */
+h5.text-muted {
+    color: #6c757d;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* Añadir espaciado entre las cajas */
+@media (max-width: 768px) {
+    .col-md-5 {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .col-md-1 {
+        display: none; /* Ocultar el separador en pantallas pequeñas */
+    }
+}

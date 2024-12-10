@@ -1,0 +1,135 @@
+body { 
+    background-color: #f8f9fa;
+}
+
+.menu-bar {
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+}
+
+.comision-info {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+table {
+    width: 100%;
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 8px;
+}
+
+table th, table td {
+    text-align: center;
+    padding: 12px;
+}
+
+#formularioMulta {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+#mapa {
+    background-color: #e9ecef;
+    border-radius: 8px;
+}
+/* Clase para los botones del menú */
+.menu-button {
+    background-color: #3498db;  /* Color de fondo */
+    color: white;               /* Color del texto */
+    font-size: 16px;            /* Tamaño de la fuente */
+    padding: 12px 20px;         /* Espaciado interno */
+    border: none;               /* Sin bordes */
+    border-radius: 5px;         /* Bordes redondeados */
+    cursor: pointer;           /* Cambiar el cursor cuando se pasa sobre el botón */
+    transition: all 0.3s ease;  /* Transición suave para efectos de hover */
+    text-transform: uppercase;  /* Texto en mayúsculas */
+    font-weight: bold;          /* Texto en negrita */
+}
+
+/* Efecto al pasar el cursor (hover) */
+.menu-button:hover {
+    background-color: #2980b9; /* Cambio de color de fondo */
+    transform: translateY(-3px); /* Movimiento sutil hacia arriba */
+}
+
+/* Efecto al hacer clic (activo) */
+.menu-button:active {
+    background-color: #1c6b91; /* Color más oscuro al hacer clic */
+    transform: translateY(1px); /* Pequeño movimiento hacia abajo */
+}
+
+/* Efecto al enfocarse (focus) */
+.menu-button:focus {
+    outline: none;  /* Quitar borde de enfoque */
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.5); /* Sombra cuando se enfoca */
+}
+
+
+/* Clase para el contenedor del formulario */
+.form-container {
+    position: fixed;           /* Fija el formulario en la pantalla */
+    top: 20px;                 /* Ajusta la distancia desde la parte superior de la ventana */
+    left: 50%;                 /* Centra el formulario horizontalmente */
+    transform: translateX(-50%); /* Centrado perfecto */
+    background-color: #fff;    /* Fondo blanco para el formulario */
+    border-radius: 10px;       /* Bordes redondeados */
+    padding: 20px;             /* Espaciado interno */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra sutil alrededor */
+    width: 100%;
+    max-width: 500px;          /* Máxima anchura del formulario */
+    z-index: 10;               /* Asegura que esté por encima de otros elementos */
+    transition: all 0.3s ease-in-out; /* Suaviza la transición de la posición */
+}
+
+/* Estilo para el título */
+.form-container h4 {
+    text-align: center;        /* Centra el título */
+    color: #3498db;            /* Color de texto azul */
+    margin-bottom: 20px;       /* Espacio debajo del título */
+}
+
+/* Estilo para los inputs */
+.form-control {
+    border-radius: 5px;        /* Bordes redondeados para los campos de texto */
+    border: 1px solid #ccc;    /* Borde gris suave */
+    padding: 10px;             /* Relleno para los campos */
+    font-size: 16px;           /* Tamaño de fuente adecuado */
+}
+
+/* Estilo para los botones */
+.btn {
+    width: 100%;               /* Botón ocupa todo el ancho disponible */
+    padding: 12px;             /* Relleno para el botón */
+    font-size: 16px;           /* Tamaño de texto */
+    border-radius: 5px;        /* Bordes redondeados */
+    cursor: pointer;          /* Cambia el cursor al pasar sobre el botón */
+    transition: background-color 0.3s ease; /* Transición de color en el hover */
+}
+
+/* Estilo para el botón de registrar */
+.btn-success {
+    background-color: #2ecc71; /* Verde claro */
+    color: white;              /* Color blanco del texto */
+    border: none;
+}
+
+/* Efecto hover en el botón */
+.btn-success:hover {
+    background-color: #27ae60; /* Verde más oscuro al pasar el mouse */
+}
+
+/* Margen inferior para los campos del formulario */
+.mb-3 {
+    margin-bottom: 1.5rem; /* Espaciado entre los campos */
+}
+
+/* Estilo de etiqueta para los campos */
+.form-label {
+    font-weight: bold;       /* Texto en negrita */
+    color: #333;             /* Color oscuro para las etiquetas */
+}
